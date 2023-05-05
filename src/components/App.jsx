@@ -13,9 +13,7 @@ function App({}) {
   const [updateDatabase, setUpdateDatabase] = useState(false);
 
   //funktion som ger index som id till varje produkt
-  // den behöver uppdateras varje gång en ändring görs i databasen genom updateStock()
   async function getProducts() {
-
     const productsUrl = `https://asj-slutprojekt-default-rtdb.europe-west1.firebasedatabase.app/.json`;
     const response = await fetch(productsUrl);
     const data = await response.json();
@@ -26,8 +24,6 @@ function App({}) {
       };
     });
     setProducts(productsWithIds);
-    console.log(data);
-
   }
 
   //uppdaterar varje gång en ändring görs i databasen
@@ -40,7 +36,6 @@ function App({}) {
     const stockUrl = `https://asj-slutprojekt-default-rtdb.europe-west1.firebasedatabase.app/${productId}/.json`;
     const response = await fetch(stockUrl);
     const data = await response.json();
-    console.log(data);
 
     const newStock = {
       in_stock: data.in_stock - amount,
@@ -57,7 +52,6 @@ function App({}) {
     const patchResponse = await fetch(stockUrl, options);
     const patchData = await patchResponse.json();
 
-    // Update the products state with the updated stock
   setProducts(prevProducts => {
     const updatedProducts = prevProducts.map(product => {
       if (product.id === productId) {
@@ -74,9 +68,6 @@ function App({}) {
   setUpdateDatabase(true);
   return patchData;
 
-    // await patchData;
-    // setUpdateDatabase(true);
-    // return patchData;
   }
 
   //funktion som lägger till produkter i varukorgen
@@ -110,7 +101,6 @@ function App({}) {
         img_url: product.img_url,
       };
 
-      console.log(cartItem);
       setCartItems([...cartItems, cartItem]);
     }
   }
@@ -152,7 +142,6 @@ function App({}) {
   //funktion som filtrerar produkter efter pris varje gång användaren ändrar i dropdownmenyn
   function handleFilterByPrice(event) {
     const value = event.target.value;
-    console.log(value);
     if (value === "lowToHigh") {
       const sortedProducts = products.sort((a, b) => {
         return a.price - b.price;
