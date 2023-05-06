@@ -1,9 +1,13 @@
 import Form from "./Form";
+import FilterByPrice from "./FilterByPrice";
 
-export default function Products({ products, updateStock, addToCart }) {
+export default function Products({ products, updateStock, addToCart, handleFilterByPrice }) {
   return (
     <div>
       <h2>Products</h2>
+      <FilterByPrice 
+      handleFilterByPrice={handleFilterByPrice} 
+      />
       {products.map(
         (product) => (
           console.log(product.in_stock),
