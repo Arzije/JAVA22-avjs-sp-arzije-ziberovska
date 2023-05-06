@@ -190,7 +190,6 @@ function App({}) {
         cartItems={cartItems}
         numberOfItemsInCart={numberOfItemsInCart}
       />
-      <FilterByPrice handleFilterByPrice={handleFilterByPrice} />
       {selectedComponent === "shoppingCart" && (
         <ShoppingCart
           cartItems={cartItems}
