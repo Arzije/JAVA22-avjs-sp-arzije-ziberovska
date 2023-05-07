@@ -13,7 +13,7 @@ export default function Products({ products, updateStock, addToCart, handleSortB
           (
             <section key={product.id} className="product">
               <h3>{product.name}</h3>
-              <p>Price: {product.price}</p>
+              <p>Price: {product.price} SEK</p>
               {product.img_url && (
                 <img src={product.img_url} />
               )}

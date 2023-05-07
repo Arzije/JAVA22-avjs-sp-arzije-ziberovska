@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-//skapa en form som lägger till produkter i Shopping cart och uppdaterar varje gång antalet ändras
 export default function Form({ productId, addToCart }) {
     const [amount, setAmount] = useState(0);
   
@@ -8,7 +7,6 @@ export default function Form({ productId, addToCart }) {
       event.preventDefault();
       addToCart(productId, amount);
       event.target.reset();
-      console.log(amount);
     }
   
     function handleFormChange(event) {

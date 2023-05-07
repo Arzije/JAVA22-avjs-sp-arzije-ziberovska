@@ -48,8 +48,7 @@ function App({}) {
       },
     };
 
-    const patchResponse = await fetch(stockUrl, options);
-    const patchData = await patchResponse.json();
+   await fetch(stockUrl, options);
 
     // uppdaterar state med nytt lagersaldo
     setProducts((prevProducts) => {
@@ -153,6 +152,7 @@ function App({}) {
     }
   }
 
+  //funktion som uppdaterar antalet produkter i varukorgen
   function handleUpdateCart(productId, amount) {
     if (amount < 1) {
       const updatedCartItems = cartItems.filter(

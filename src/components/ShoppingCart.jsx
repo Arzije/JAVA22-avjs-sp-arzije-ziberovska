@@ -21,7 +21,7 @@ export default function ShoppingCart({
           {cartItem.img_url && (
             <img src={cartItem.img_url} style={{ width: "300px" }} />
           )}
-          <p>Price: {cartItem.price}</p>
+          <p>Price: {cartItem.price} SEK</p>
           <p>Amount: {cartItem.amountOfPurchase}</p>
           <button onClick={() => handleRemoveFromCart(cartItem.productId)}>
             Remove from cart
