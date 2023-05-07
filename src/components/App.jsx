@@ -100,6 +100,7 @@ function App({}) {
         img_url: product.img_url,
       };
       setCartItems([...cartItems, cartItem]);
+      alert("Product added to cart");
     }
   }
 
