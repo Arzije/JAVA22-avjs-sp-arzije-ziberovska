@@ -1,36 +1,3 @@
-// // import CountPurchase from "../shoppingCart/CountPurchase";
-// import { useState } from "react";
-
-// export default function Form({ productId, updateStock, addToCart }) {
-//     const [amountOfProduct, setAmountOfProduct] = useState(0);
-//     let tempAmountOfProduct = 0;
-  
-//     function handleSubmit(event) {
-//       event.preventDefault();
-//       updateStock(productId, amountOfProduct);
-//       addToCart(productId, amountOfProduct);
-//     }
-
-//     function handleChange(event) {
-//       event.preventDefault();
-//       tempAmountOfProduct = event.target.value;
-//       console.log(tempAmountOfProduct);
-
-//       setAmountOfProduct(tempAmountOfProduct);
-//     }
-  
-//     return (
-//       <div>
-//         <form onSubmit={handleSubmit}>
-//           <label htmlFor="amountOfProduct">Select amount </label>
-//           <input type="number" onChange={handleChange}/>
-//           <button type="submit">Add to cart</button>
-//         </form>
-
-//         </div>
-//     );
-// }
-
 import { useState } from "react";
 
 //skapa en form som lägger till produkter i Shopping cart och uppdaterar varje gång antalet ändras

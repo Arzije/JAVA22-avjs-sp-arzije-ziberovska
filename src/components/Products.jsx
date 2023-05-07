@@ -1,12 +1,15 @@
 import Form from "./Form";
+import SortByPrice from "./SortByPrice";
 
-export default function Products({ products, updateStock, addToCart }) {
+export default function Products({ products, updateStock, addToCart, handleSortByPrice }) {
   return (
-    <div>
+    <div className="products">
       <h2>Products</h2>
+      <SortByPrice 
+      handleSortByPrice={handleSortByPrice} 
+      />
       {products.map(
         (product) => (
-          console.log(product.in_stock),
           (
             <div key={product.id} className="product">
               <h3>{product.name}</h3>
@@ -14,7 +17,6 @@ export default function Products({ products, updateStock, addToCart }) {
               {product.img_url && (
                 <img src={product.img_url} style={{ width: "300px" }} />
               )}
-              <p>{"Product ID: " + product.id}</p>
               {product.in_stock > 0 && (
                 <Form
                   productId={product.id}

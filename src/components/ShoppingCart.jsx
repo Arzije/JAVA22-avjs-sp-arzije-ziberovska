@@ -1,5 +1,3 @@
-import React, { useMemo } from "react";
-
 export default function ShoppingCart({
   cartItems,
   handleRemoveFromCart,
@@ -8,18 +6,16 @@ export default function ShoppingCart({
 }) {
 
     //funktion som räknar ut totalpriset av varor i varukorgen
-  const totalPrice = useMemo(() => {
-    return cartItems.reduce((total, cartItem) => {
+    const totalPrice = cartItems.reduce((total, cartItem) => {
       return total + cartItem.price * cartItem.amountOfPurchase;
     }, 0);
-  }, [cartItems]);
 
   return (
-    <div>
+    <div className="products">
       <h2>Shopping cart</h2>
       {cartItems.length === 0 && <p>No items in cart</p>}
       {cartItems.map((cartItem) => (
-        <div key={cartItem.productId}>
+        <div key={cartItem.productId} className="product">
           <p>Product id: {cartItem.productId}</p>
           <h3>{cartItem.name}</h3>
           {cartItem.img_url && (

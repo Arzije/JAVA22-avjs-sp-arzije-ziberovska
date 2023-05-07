@@ -2,8 +2,7 @@ import "../css/App.css";
 import ShoppingCart from "./ShoppingCart";
 import Products from "./Products";
 import Menu from "./Menu";
-import FilterByPrice from "./FilterByPrice";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 
 function App({}) {
@@ -13,21 +12,17 @@ function App({}) {
   const [updateDatabase, setUpdateDatabase] = useState(false);
 
   //funktion som ger index som id till varje produkt
-  // den behöver uppdateras varje gång en ändring görs i databasen genom updateStock()
   async function getProducts() {
-
     const productsUrl = `https://asj-slutprojekt-default-rtdb.europe-west1.firebasedatabase.app/.json`;
     const response = await fetch(productsUrl);
     const data = await response.json();
-    const productsWithIds = Object.keys(data).map((key, index) => {
+    const productsWithIds = Object.keys(data).map((index) => {
       return {
         id: index,
-        ...data[key],
+        ...data[index],
       };
     });
     setProducts(productsWithIds);
-    console.log(data);
-
   }
 
   //uppdaterar varje gång en ändring görs i databasen
@@ -40,7 +35,6 @@ function App({}) {
     const stockUrl = `https://asj-slutprojekt-default-rtdb.europe-west1.firebasedatabase.app/${productId}/.json`;
     const response = await fetch(stockUrl);
     const data = await response.json();
-    console.log(data);
 
     const newStock = {
       in_stock: data.in_stock - amount,
@@ -57,26 +51,20 @@ function App({}) {
     const patchResponse = await fetch(stockUrl, options);
     const patchData = await patchResponse.json();
 
-    // Update the products state with the updated stock
-  setProducts(prevProducts => {
-    const updatedProducts = prevProducts.map(product => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          in_stock: newStock.in_stock,
-        };
-      }
-      return product;
+    // uppdaterar state med nytt lagersaldo
+    setProducts((prevProducts) => {
+      const updatedProducts = prevProducts.map((product) => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            in_stock: newStock.in_stock,
+          };
+        }
+        return product;
+      });
+      return updatedProducts;
     });
-    return updatedProducts;
-  });
-
-  setUpdateDatabase(true);
-  return patchData;
-
-    // await patchData;
-    // setUpdateDatabase(true);
-    // return patchData;
+    setUpdateDatabase(true);
   }
 
   //funktion som lägger till produkter i varukorgen
@@ -88,6 +76,7 @@ function App({}) {
     } else if (amount < 1) {
       alert("Please enter a valid amount");
       return;
+      //om produkten redan finns i varukorgen, lägg till antalet till den befintliga produkten
     } else if (cartItems.some((cartItem) => cartItem.productId === productId)) {
       const newCartItems = cartItems.map((cartItem) => {
         if (cartItem.productId === productId) {
@@ -101,6 +90,7 @@ function App({}) {
         }
       });
       setCartItems(newCartItems);
+      //om produkten inte finns i varukorgen, lägg till den
     } else {
       const cartItem = {
         productId: productId,
@@ -109,19 +99,15 @@ function App({}) {
         price: product.price,
         img_url: product.img_url,
       };
-
-      console.log(cartItem);
       setCartItems([...cartItems, cartItem]);
     }
   }
 
   //funktion som räknar antalet produkter i varukorgen
-  const numberOfItemsInCart = useMemo(() => {
-    return cartItems.reduce((total, cartItem) => {
-      const amount = parseInt(cartItem.amountOfPurchase);
-      return total + amount;
-    }, 0);
-  }, [cartItems]);
+  const numberOfItemsInCart = cartItems.reduce((total, cartItem) => {
+    const amount = parseInt(cartItem.amountOfPurchase);
+    return total + amount;
+  }, 0);
 
   // funktion som hanterar köp, uppdaterar lagersaldo, tömmer varukorgen och meddelar kunden
   function handlePurchase() {
@@ -135,7 +121,6 @@ function App({}) {
   //funktion som väljer vilken komponent som ska visas (product, eller shoppingcart)
   function handleSelectedComponent(component) {
     setSelectedComponent(component);
-    console.log("handleClick");
   }
 
   //funktion som tar bort produkter från varukorgen
@@ -149,10 +134,9 @@ function App({}) {
     }
   }
 
-  //funktion som filtrerar produkter efter pris varje gång användaren ändrar i dropdownmenyn
-  function handleFilterByPrice(event) {
+  //funktion som sorterar produkter efter pris varje gång användaren ändrar i dropdownmenyn
+  function handleSortByPrice(event) {
     const value = event.target.value;
-    console.log(value);
     if (value === "lowToHigh") {
       const sortedProducts = products.sort((a, b) => {
         return a.price - b.price;
@@ -168,40 +152,33 @@ function App({}) {
     }
   }
 
-  //funktion som uppdaterar antalet produkter i varukorgen
   function handleUpdateCart(productId, amount) {
     if (amount < 1) {
-      const newCartItems = cartItems.filter(
+      const updatedCartItems = cartItems.filter(
         (cartItem) => cartItem.productId !== productId
       );
-      setCartItems(newCartItems);
-      if (newCartItems.length === 0) {
+      setCartItems(updatedCartItems);
+      if (updatedCartItems.length === 0) {
         setSelectedComponent("products");
       }
     } else {
-      const newCartItems = cartItems.map((cartItem) => {
-        if (cartItem.productId === productId) {
-          return {
-            ...cartItem,
-            amountOfPurchase: amount,
-          };
-        } else {
-          return cartItem;
-        }
-      });
-      setCartItems(newCartItems);
+      const updatedCartItems = cartItems.map((cartItem) =>
+        cartItem.productId === productId
+          ? { ...cartItem, amountOfPurchase: amount }
+          : cartItem
+      );
+      setCartItems(updatedCartItems);
     }
   }
 
   //här visas alla komponenter
   return (
-    <div className="App">
+    <div className="app">
       <Menu
         onClick={handleSelectedComponent}
         cartItems={cartItems}
         numberOfItemsInCart={numberOfItemsInCart}
       />
-      <FilterByPrice handleFilterByPrice={handleFilterByPrice} />
       {selectedComponent === "shoppingCart" && (
         <ShoppingCart
           cartItems={cartItems}
@@ -212,7 +189,11 @@ function App({}) {
         />
       )}
       {selectedComponent === "products" && (
-        <Products products={products} addToCart={addToCart} />
+        <Products
+          products={products}
+          addToCart={addToCart}
+          handleSortByPrice={handleSortByPrice}
+        />
       )}
     </div>
   );
