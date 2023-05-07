@@ -11,11 +11,11 @@ export default function Products({ products, updateStock, addToCart, handleSortB
       {products.map(
         (product) => (
           (
-            <div key={product.id} className="product">
+            <section key={product.id} className="product">
               <h3>{product.name}</h3>
               <p>Price: {product.price}</p>
               {product.img_url && (
-                <img src={product.img_url} style={{ width: "300px" }} />
+                <img src={product.img_url} />
               )}
               {product.in_stock > 0 && (
                 <Form
@@ -25,12 +25,12 @@ export default function Products({ products, updateStock, addToCart, handleSortB
                 />
               )}
               {product.in_stock > 0 ? (
-                <p>{"In stock: " + product.in_stock}</p>
+                <p >{"In stock: " + product.in_stock}</p>
               ) : (
-                <p>Out of stock</p>
+                <p className="outOfStock">Out of stock</p>
               )}
 
-            </div>
+            </section>
           )
         )
       )}

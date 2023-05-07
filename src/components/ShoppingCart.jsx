@@ -11,11 +11,11 @@ export default function ShoppingCart({
     }, 0);
 
   return (
-    <div className="products">
+    <section className="products">
       <h2>Shopping cart</h2>
       {cartItems.length === 0 && <p>No items in cart</p>}
       {cartItems.map((cartItem) => (
-        <div key={cartItem.productId} className="product">
+        <section key={cartItem.productId} className="product">
           <p>Product id: {cartItem.productId}</p>
           <h3>{cartItem.name}</h3>
           {cartItem.img_url && (
@@ -23,7 +23,6 @@ export default function ShoppingCart({
           )}
           <p>Price: {cartItem.price}</p>
           <p>Amount: {cartItem.amountOfPurchase}</p>
-          <p>{"Product ID: " + cartItem.productId}</p>
           <button onClick={() => handleRemoveFromCart(cartItem.productId)}>
             Remove from cart
           </button>
@@ -34,7 +33,7 @@ export default function ShoppingCart({
             }
             value={cartItem.amountOfPurchase}
           />
-        </div>
+        </section>
       ))}
 
       <p>Total price: {totalPrice}</p>
@@ -42,6 +41,6 @@ export default function ShoppingCart({
       {cartItems.length > 0 && (
         <button onClick={() => handlePurchase()}>Finilize purchase</button>
       )}
-    </div>
+    </section>
   );
 }
