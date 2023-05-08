@@ -4,11 +4,12 @@ export default function ShoppingCart({
   handleUpdateCart,
   handlePurchase,
 }) {
+  console.log(cartItems);
 
-    //funktion som räknar ut totalpriset av varor i varukorgen
-    const totalPrice = cartItems.reduce((total, cartItem) => {
-      return total + cartItem.price * cartItem.amountOfPurchase;
-    }, 0);
+  //funktion som räknar ut totalpriset av varor i varukorgen
+  const totalPrice = cartItems.reduce((total, cartItem) => {
+    return total + cartItem.price * cartItem.amountOfPurchase;
+  }, 0);
 
   return (
     <section className="products">
@@ -18,20 +19,24 @@ export default function ShoppingCart({
         <section key={cartItem.productId} className="product">
           <p>Product id: {cartItem.productId}</p>
           <h3>{cartItem.name}</h3>
+          <p>Price: {cartItem.price} SEK</p>
           {cartItem.img_url && (
             <img src={cartItem.img_url} style={{ width: "300px" }} />
           )}
-          <p>Price: {cartItem.price} SEK</p>
           <p>Amount: {cartItem.amountOfPurchase}</p>
           <button onClick={() => handleRemoveFromCart(cartItem.productId)}>
             Remove from cart
           </button>
+          <label htmlFor="amountInShop">Select amount: </label>
           <input
             type="number"
             onChange={(event) =>
-              handleUpdateCart(cartItem.productId, event.target.value)
+              event.target.value > cartItem.in_stock
+                ? setTimeout(() => {
+                    alert("Not enough in stock");
+                  }, 200) 
+                : handleUpdateCart(cartItem.productId, event.target.value)
             }
-            value={cartItem.amountOfPurchase}
           />
         </section>
       ))}
